@@ -13,6 +13,8 @@ let dogId
 
 document.addEventListener('DOMContentLoaded', () => {
     const tableBody = document.getElementById('table-body')
+    const editForm = document.querySelector('#dog-form')
+
     getDogs()
     
     tableBody.addEventListener('click', function(event) {
@@ -20,11 +22,24 @@ document.addEventListener('DOMContentLoaded', () => {
             dogId = (event.target.parentElement.parentElement.getAttribute('data-id'))
             let row = event.target.parentElement.parentElement
             let cells = row.getElementsByTagName('td')
+            // loadDog(cells[0].innerContent, cells[1].innerContent, cells[2].innerContent)
             loadDog(cells[0].innerText, cells[1].innerText, cells[2].innerText)
         }
     })
 
-    
+    editForm.addEventListener('submit', function(event) {
+        event.preventDefault()
+
+        let doggie = {
+            name: editForm.name.value,
+            breed: editForm.breed.value,
+            sex: editForm.sex.value
+        }
+
+        updateDog(doggie)
+    })
+
+
     
 })
 
@@ -50,22 +65,24 @@ function newDog(doggie) {
     tableBody.appendChild(dogRow)
 }
 
-function loadDog(doggie) {
+function loadDog(name, breed, sex) {
     const editForm = document.querySelector('#dog-form')
+    console.log(name, breed, sex)
     editForm.name.value = name
     editForm.breed.value = breed
     editForm.sex.value = sex
 }
 
-function updateDog(doggie) {
+function updateDog(dogNew) {
 
     fetch(dogsUrl + `/${dogId}`, {
         method: 'PATCH',
-        body: JSON.stringify(doggie),
+        body: JSON.stringify(dogNew),
         headers: newHeaders
     })
         .then(response => response.json())
-        .then(console.log)
+        .then(location.reload())
 
-
+    
 }
+
