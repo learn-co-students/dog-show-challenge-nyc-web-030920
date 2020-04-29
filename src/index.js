@@ -29,7 +29,10 @@ const displayDogs = (dog) => {
     <td>${dog.name}</td> 
     <td>${dog.breed}</td> 
     <td>${dog.sex}</td> 
-    <td><button data-id=${dog.id} class="edit-btn">Edit</button></td>
+    <td>
+    <button data-id=${dog.id} class="edit-btn">Edit</button>
+    <button data-id=${dog.id} class="delete-btn">Delete</button>
+    </td>
     </tr>
     `
 };
@@ -44,6 +47,12 @@ const buttonFunctionality = () => {
             let pupSex = pup.previousElementSibling.textContent
             
             autoFillForm(pupId, pupName, pupBreed, pupSex)
+        }
+        if (event.target.className === 'delete-btn'){
+            let badPupId = event.target.dataset.id
+            event.target.parentElement.parentElement.remove()
+
+            deleteDog(badPupId)
         }
     })
 };
@@ -74,6 +83,12 @@ const editDog = (pupId) => {
             })
         })
         fetchDogs()
+    })
+};
+
+const deleteDog = (pupId) => {
+    fetch(`http://localhost:3000/dogs/${pupId}`, {
+        method: 'DELETE'
     })
 };
 
