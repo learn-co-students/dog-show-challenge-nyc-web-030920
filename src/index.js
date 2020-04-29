@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function loadDog(dog){
         const dogRow = document.createElement("tr")
         dogRow.innerHTML= `
-        <td name="name">${dog.name}</td> 
+        <td name="name" data-id="${dog.id}">${dog.name}</td> 
         <td name="breed">${dog.breed}</td> 
         <td name="sex">${dog.sex}</td> 
         <td><button>Edit</button></td>
@@ -35,7 +35,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     })
 
-    editForm.addEventListener
+    editForm.addEventListener("submit", function(e){
+        // √√listen for submit and stop default action
+        // get dog id
+        // make ptch request to dog id and update info in API
+        // make get request to get new dog table information AFTER PATCH
+        e.preventDefault()
+        
+        
+
+
+        fetch(`http://localhost:3000/pups/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'accept': 'application/json',
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify()
+            })
+            .then(response => response.json())
+            .then(json => console.log(json))
+
+        console.log("stopped the submit")
+    })
 
 
 //!END OF THE DOM LISTENER
