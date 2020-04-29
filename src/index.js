@@ -103,5 +103,4 @@ function creatDogHTML(dogObj) {
 
   tr.append(tdName, tdBreed, tdSex, tdEdit)
   tableBody.append(tr)
-
 } 
