@@ -40,7 +40,6 @@ function editDog() {
             let tr = eventTarget.parentElement.parentElement;
             populateForm(tr, dogForm);
             updateDog(tr, dogForm);
-            //updateTable(tr);
         }
     })
 }
@@ -70,7 +69,8 @@ function updateDog(tr, form) {
                 accept: 'application/json'
             },
             body: JSON.stringify(newObj)
-        }).then(res => res.json())
+        })
+            .then(res => res.json())
             .then(function (result) {
                 trContent[0].textContent = result['name'];
                 trContent[1].textContent = result['breed'];
@@ -78,20 +78,5 @@ function updateDog(tr, form) {
             })
 
         form.reset();
-
     })
 }
-
-// function updateTable(tr) {
-//     let id = tr.dataset.dogId;
-//     let trContent = tr.children;
-//     const url = `http://localhost:3000/dogs/${id}`;
-//     fetch(url)
-//         .then(res => res.json())
-//         .then(function (result) {
-//             trContent[0].textContent = result['name'];
-//             trContent[1].textContent = result['breed'];
-//             trContent[2].textContent = result['sex'];
-//         })
-// }
-
