@@ -27,6 +27,49 @@ function showDogTable(dog){
     dogTable.append(tr);
 }
 
+//1. populate the info to form
+//2. make a patch to database .../:id
+//3. get info from database .../id
+//4. reset the form at the end
 function editDog(){
-    
+    const dogTable = document.querySelector('table');
+    const dogForm = document.querySelector('#dog-form');
+    dogTable.addEventListener('click', function(event){
+        let eventTarget = event.target;
+        if (eventTarget.tagName === 'BUTTON') {
+            let tr = eventTarget.parentElement.parentElement;
+            populateForm(tr, dogForm);
+            updateDog(tr, dogForm);
+            //updateTable(tr);
+        }
+    })
 }
+
+function populateForm(tr, form) {
+    let dogInfo = tr.children;
+    form.name.value = dogInfo[0].textContent;
+    form.breed.value = dogInfo[1].textContent;
+    form.sex.value = dogInfo[2].textContent;
+}
+
+function updateDog(tr, form) {
+    let id = tr.dataset.dogId;
+    const url = `http://localhost:3000/dogs/${id}`;
+    form.addEventListener('submit', function(event){
+        event.preventDefault()
+        let newObj = {
+            'name': form.name.value,
+            'breed': form.breed.value,
+            'sex':form.sex.value
+        }
+        fetch(url, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                accept: 'application/json'
+            },
+            body: JSON.stringify(newObj)
+        })
+    })
+}
+
