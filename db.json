@@ -4,7 +4,7 @@
       "id": 1,
       "name": "Baby",
       "breed": "Scottish Deerhound",
-      "sex": "female"
+      "sex": "male"
     },
     {
       "id": 2,
@@ -16,7 +16,7 @@
       "id": 3,
       "name": "Snickers",
       "breed": "Dachshund",
-      "sex": "female"
+      "sex": "male"
     },
     {
       "id": 4,
@@ -112,7 +112,7 @@
       "id": 19,
       "name": "Penny",
       "breed": "Wheaten Terrier",
-      "sex": "male"
+      "sex": "female"
     },
     {
       "id": 20,

@@ -49,7 +49,6 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(resp => resp.json())
     .then(updateRender)
   })
-
 })
 
 function updateRender(dogObj) {
@@ -63,6 +62,8 @@ function updateRender(dogObj) {
   sex.innerText = dogObj.sex
   breed.innerText = dogObj.breed
   name.innerText = dogObj.name 
+
+  form.reset()
 }
 
 const endpoint = 'http://localhost:3000/dogs'
