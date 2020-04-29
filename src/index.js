@@ -1,13 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
     getDog()
-
+    editBtn()
 });
 //================================================
 function getDog() {
-fetch('http://localhost:3000/dogs')
+ fetch('http://localhost:3000/dogs')
 	.then((resp) => resp.json())
 	.then((dogs) => {
         let table = document.getElementById('table-body')
+        table.innerHTML = ''
         dogs.forEach(function(dog){
         let tr = document.createElement('tr')
         tr.dataset.id = dog.id
@@ -19,7 +20,7 @@ fetch('http://localhost:3000/dogs')
         `
         table.appendChild(tr)
        })
-    editBtn()
+   
 
     });
 
@@ -29,21 +30,23 @@ function editBtn(){
     //let btn = document.getElementsByTagName('button')
     document.addEventListener('click', function(e){
         if(e.target.className == 'editBtn'){
+            let id = e.target.parentNode.parentNode.dataset.id
+
         //console.log(e.target.parentNode.parentNode.children[2].innerText)
          let form = document.getElementById('dog-form')
         // form.addEventListener('submit',function(){
-
-        let name = form.name.value = e.target.parentNode.parentNode.children[0].innerText
-        let breed = form.breed.value=e.target.parentNode.parentNode.children[1].innerText
-        let sex = form.sex.value = e.target.parentNode.parentNode.children[2].innerText
+       form.dataset.id = id
+       form.name.value = e.target.parentNode.parentNode.children[0].innerText
+       form.breed.value=e.target.parentNode.parentNode.children[1].innerText
+       form.sex.value = e.target.parentNode.parentNode.children[2].innerText
         //})
 
-        let id = e.target.parentNode.parentNode.dataset.id
-        let table = document.getElementById('table-body')
-
+    }
+    let form = document.getElementById('dog-form')
 
         form.addEventListener('submit', function(e){
             e.preventDefault()
+            let id = e.target.dataset.id
             let newName = e.target.name.value
             let newBreed = e.target.breed.value
             let newSex = e.target.sex.value
@@ -60,19 +63,13 @@ function editBtn(){
             })
         })
         .then((resp)=>resp.json())
-        .then((dog)=> {
-        //let tr = document.getElementsByTagName('tr')
-        let tr = document.createElement('tr')
-        tr.innerHTML = `
-			<td>${dog.name}</td> <td>${dog.breed}</td> <td>${dog.sex}</td>
-			
-        `
-       table.appendChild(tr)
-        })
+        .then(getDog)
+            
+         
 
          })
 
-        }
+       
    
 
     })

@@ -2,14 +2,14 @@
   "dogs": [
     {
       "id": 1,
-      "name": "Teddy",
-      "breed": "Rhodesian Ridgeback",
+      "name": "Andy",
+      "breed": "Shihtzu",
       "sex": "male"
     },
     {
       "id": 2,
-      "name": "Teddy",
-      "breed": "Rhodesian Ridgeback",
+      "name": "Charles",
+      "breed": "Shihtzu",
       "sex": "female"
     },
     {
