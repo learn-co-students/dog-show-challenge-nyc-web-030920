@@ -5,12 +5,13 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch(baseUrl)
             .then(res => res.json())
             .then(function (dogs) {
+                tableBody.innerHTML = ``;
                 dogs.forEach(function (dog) {
                     showDogTable(dog);
                 })
             })
     }
-    
+
     function showDogTable(dog) {
         let tr = document.createElement('tr')
         tr.dataset.dogId = dog['id'];
@@ -22,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
         `
         tableBody.append(tr);
     }
-    
+
     //1. populate the info to form
     //2. make a patch to database .../:id
     //3. get info from database .../id
@@ -37,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         })
     }
-    
+
     function populateForm(tr, form) {
         let dogInfo = tr.children;
         form.name.value = dogInfo[0].textContent;
@@ -46,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
         form.dataset.id = tr.dataset.dogId;
     }
 
-    document.addEventListener('submit', function(event){
+    document.addEventListener('submit', function (event) {
         event.preventDefault()
         const form = document.querySelector('#dog-form');
         let target = event.target;
@@ -65,15 +66,19 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             body: JSON.stringify(newObj)
         })
-        .then(res => res.json())
-        .then(function (result) {
-            trContent.children[0].textContent = result['name'];
-            trContent.children[1].textContent = result['breed'];
-            trContent.children[2].textContent = result['sex'];
-        })
+            .then(res => res.json())
+            // both ways are working, render result from PATCH method:
+            // .then(function (result) {
+            //     trContent.children[0].textContent = result['name'];
+            //     trContent.children[1].textContent = result['breed'];
+            //     trContent.children[2].textContent = result['sex'];
+            // })
+
+            //this will render whole dog list;
+            .then(renderDogList());
         form.reset();
     })
-    
+
     renderDogList();
     editDog();
 })
