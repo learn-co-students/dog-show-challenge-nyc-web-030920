@@ -13,25 +13,27 @@ document.addEventListener('DOMContentLoaded', () => {
     function loadDog(dog){
         const dogRow = document.createElement("tr")
         dogRow.innerHTML= `
-        <td name="name" data-id="${dog.id}">${dog.name}</td> 
+        <td name="name">${dog.name}</td> 
         <td name="breed">${dog.breed}</td> 
         <td name="sex">${dog.sex}</td> 
-        <td><button>Edit</button></td>
+        <td><button id="edit-btn" data-id="${dog.id}">Edit</button></td>
         `
+        dogRow.dataset.id = dog.id
         dogTable.appendChild(dogRow)
     }
 
     dogTable.addEventListener("click", function(e){
         if (e.target.textContent === "Edit"){
-            const nameField = editForm.children[0]
-            const breedField = editForm.children[1]
-            const sexField = editForm.children[2]
-
-            const dogRow = e.target.parentNode.parentNode
-
-            nameField.value = dogRow.children[0].textContent
-            breedField.value = dogRow.children[1].textContent
-            sexField.value = dogRow.children[2].textContent
+            const id = e.target.dataset.id
+            // console.log(e.target.dataset.id)
+            fetch(`http://localhost:3000/dogs/${id}`)
+                .then(response => response.json())
+                .then(dog => {
+                    editForm.name.value = dog.name,
+                    editForm.sex.value = dog.sex,
+                    editForm.breed.value = dog.breed,
+                    editForm.dataset.id = dog.id
+                })
         }
     })
 
@@ -41,21 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // make ptch request to dog id and update info in API
         // make get request to get new dog table information AFTER PATCH
         e.preventDefault()
-        
-        
-
-
-        fetch(`http://localhost:3000/pups/${id}`, {
-            method: 'PATCH',
-            headers: {
-                'accept': 'application/json',
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify()
-            })
-            .then(response => response.json())
-            .then(json => console.log(json))
-
+        console.log(e.target)
         console.log("stopped the submit")
     })
 
