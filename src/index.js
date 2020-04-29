@@ -29,7 +29,6 @@ document.addEventListener("click", function(e){
             let dogName = form.name.value
             let dogBreed = form.breed.value
             let dogSex = form.sex.value
-            console.log(dogName, dogBreed, dogSex)
 
             fetch(`${baseURL}/${dogID}`, {
                 method: 'PATCH',
@@ -38,14 +37,12 @@ document.addEventListener("click", function(e){
                 },
                 body: JSON.stringify({name: dogName, breed: dogBreed, sex: dogSex})
               })
-              .then(event = > {
+              .then(event => {
                 form.reset()
                 table.innerHTML = ''
                 populateTable()
-              })
+              }) // end of Then statement
               
-              
-
         } // end of "if click is submit"
 
 }) // end of listener 
