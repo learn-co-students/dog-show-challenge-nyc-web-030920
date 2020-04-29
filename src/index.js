@@ -9,9 +9,11 @@
 document.addEventListener('DOMContentLoaded', () => {
     fetchDogs()
     buttonFunctionality()
+    registerDog()
 })
 const dogTable = document.querySelector('#table-body')
 const dogForm = document.querySelector('#dog-form')
+const registrationForm = document.querySelector('#add-dog-form')
 
 const fetchDogs = () => {
     fetch('http://localhost:3000/dogs')
@@ -37,6 +39,18 @@ const displayDogs = (dog) => {
     `
 };
 
+const registerDog = () => {
+    registrationForm.addEventListener('submit', (event) => {
+        event.preventDefault()
+        let formField = event.target
+        let name = formField.name.value
+        let breed = formField.breed.value
+        let sex = formField.sex.value
+        
+        saveNewDog(name, breed, sex)
+    })
+};
+
 const buttonFunctionality = () => {
     dogTable.addEventListener('click', (event) => {
         if (event.target.className === 'edit-btn') {
@@ -55,6 +69,22 @@ const buttonFunctionality = () => {
             deleteDog(badPupId)
         }
     })
+};
+
+const saveNewDog = (name, breed, sex) => {
+    fetch('http://localhost:3000/dogs', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+            name: name,
+            breed: breed,
+            sex: sex
+        })
+    })
+    fetchDogs()
 };
 
 const autoFillForm = (pupId, pupName, pupBreed, pupSex) => {

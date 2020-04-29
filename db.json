@@ -3,7 +3,7 @@
     {
       "id": 1,
       "name": "Baby",
-      "breed": "Scottish Deerhound",
+      "breed": "French Bulldog",
       "sex": "female"
     },
     {
@@ -113,6 +113,12 @@
       "name": "Coco",
       "breed": "Affenpinscher",
       "sex": "female"
+    },
+    {
+      "name": "Astor",
+      "breed": "Frenchie",
+      "sex": "female",
+      "id": 21
     }
   ]
 }
