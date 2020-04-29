@@ -2,8 +2,8 @@
   "dogs": [
     {
       "id": 1,
-      "name": "Baby",
-      "breed": "Scottish Deerhound",
+      "name": "Teddy",
+      "breed": "Rhodesian Ridgeback",
       "sex": "male"
     },
     {
