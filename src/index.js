@@ -52,8 +52,8 @@ function populateForm(tr, form) {
 }
 
 function updateDog(tr, form) {
-    let id = tr.dataset.dogId;
     let trContent = tr.children;
+    let id = tr.dataset.dogId;
     const url = `http://localhost:3000/dogs/${id}`;
     form.addEventListener('submit', function (event) {
         event.preventDefault()
@@ -70,13 +70,12 @@ function updateDog(tr, form) {
             },
             body: JSON.stringify(newObj)
         })
-            .then(res => res.json())
-            .then(function (result) {
-                trContent[0].textContent = result['name'];
-                trContent[1].textContent = result['breed'];
-                trContent[2].textContent = result['sex'];
-            })
-
+        .then(res => res.json())
+        .then(function (result) {
+            trContent[0].textContent = result['name'];
+            trContent[1].textContent = result['breed'];
+            trContent[2].textContent = result['sex'];
+        })
         form.reset();
     })
 }
