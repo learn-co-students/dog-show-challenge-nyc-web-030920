@@ -1,62 +1,57 @@
 document.addEventListener('DOMContentLoaded', () => {
-    renderDogList();
-    editDog();
-})
-
-function renderDogList() {
-    const baseUrl = 'http://localhost:3000/dogs';
-    fetch(baseUrl)
-        .then(res => res.json())
-        .then(function (dogs) {
-            dogs.forEach(function (dog) {
-                showDogTable(dog);
+    const tableBody = document.querySelector("#table-body")
+    function renderDogList() {
+        const baseUrl = 'http://localhost:3000/dogs';
+        fetch(baseUrl)
+            .then(res => res.json())
+            .then(function (dogs) {
+                dogs.forEach(function (dog) {
+                    showDogTable(dog);
+                })
             })
+    }
+    
+    function showDogTable(dog) {
+        let tr = document.createElement('tr')
+        tr.dataset.dogId = dog['id'];
+        tr.innerHTML = `
+        <td>${dog['name']}</td>
+        <td>${dog['breed']}</td>
+        <td>${dog['sex']}</td>
+        <td><button>Edit Dog</button></td>
+        `
+        tableBody.append(tr);
+    }
+    
+    //1. populate the info to form
+    //2. make a patch to database .../:id
+    //3. get info from database .../id
+    //4. reset the form at the end
+    function editDog() {
+        const dogForm = document.querySelector('#dog-form');
+        tableBody.addEventListener('click', function (event) {
+            let eventTarget = event.target;
+            if (eventTarget.tagName === 'BUTTON') {
+                let tr = eventTarget.parentElement.parentElement;
+                populateForm(tr, dogForm);
+            }
         })
-}
+    }
+    
+    function populateForm(tr, form) {
+        let dogInfo = tr.children;
+        form.name.value = dogInfo[0].textContent;
+        form.breed.value = dogInfo[1].textContent;
+        form.sex.value = dogInfo[2].textContent;
+        form.dataset.id = tr.dataset.dogId;
+    }
 
-function showDogTable(dog) {
-    const dogTable = document.querySelector('table');
-    let tr = document.createElement('tr')
-    tr.dataset.dogId = dog['id'];
-    tr.innerHTML = `
-    <td>${dog['name']}</td>
-    <td>${dog['breed']}</td>
-    <td>${dog['sex']}</td>
-    <td><button>Edit Dog</button></td>
-    `
-    dogTable.append(tr);
-}
-
-//1. populate the info to form
-//2. make a patch to database .../:id
-//3. get info from database .../id
-//4. reset the form at the end
-function editDog() {
-    const dogTable = document.querySelector('table');
-    const dogForm = document.querySelector('#dog-form');
-    dogTable.addEventListener('click', function (event) {
-        let eventTarget = event.target;
-        if (eventTarget.tagName === 'BUTTON') {
-            let tr = eventTarget.parentElement.parentElement;
-            populateForm(tr, dogForm);
-            updateDog(tr, dogForm);
-        }
-    })
-}
-
-function populateForm(tr, form) {
-    let dogInfo = tr.children;
-    form.name.value = dogInfo[0].textContent;
-    form.breed.value = dogInfo[1].textContent;
-    form.sex.value = dogInfo[2].textContent;
-}
-
-function updateDog(tr, form) {
-    let trContent = tr.children;
-    let id = tr.dataset.dogId;
-    const url = `http://localhost:3000/dogs/${id}`;
-    form.addEventListener('submit', function (event) {
+    document.addEventListener('submit', function(event){
         event.preventDefault()
+        const form = document.querySelector('#dog-form');
+        let target = event.target;
+        const url = `http://localhost:3000/dogs/${target.dataset.id}`;
+        let trContent = document.querySelector(`tr[data-dog-id="${target.dataset.id}"]`)
         let newObj = {
             'name': form.name.value,
             'breed': form.breed.value,
@@ -72,10 +67,13 @@ function updateDog(tr, form) {
         })
         .then(res => res.json())
         .then(function (result) {
-            trContent[0].textContent = result['name'];
-            trContent[1].textContent = result['breed'];
-            trContent[2].textContent = result['sex'];
+            trContent.children[0].textContent = result['name'];
+            trContent.children[1].textContent = result['breed'];
+            trContent.children[2].textContent = result['sex'];
         })
         form.reset();
     })
-}
+    
+    renderDogList();
+    editDog();
+})
