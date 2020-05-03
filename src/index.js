@@ -7,7 +7,7 @@
 baseURL = "http://localhost:3000/dogs"
 document.addEventListener('DOMContentLoaded', () => {
 
-populateTable()
+populateTable() // populates table with function below
 
 const table = document.querySelector("#table-body")
 const form = document.querySelector("#dog-form")
@@ -37,7 +37,8 @@ document.addEventListener("click", function(e){
                 },
                 body: JSON.stringify({name: dogName, breed: dogBreed, sex: dogSex})
               })
-              .then(event => {
+              .then(response => {
+                  console.log(response) //not necessary just playing around
                 form.reset()
                 table.innerHTML = ''
                 populateTable()
