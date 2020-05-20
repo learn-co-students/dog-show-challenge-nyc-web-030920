@@ -9,7 +9,6 @@ let dogFormSex = form.sex
 document.addEventListener("DOMContentLoaded", e => {
     fetchDogs()
     handleClick()
-    handleSubmit()
 })
 
 const fetchDogs = () => {
@@ -19,6 +18,7 @@ const fetchDogs = () => {
 }
 
 const renderDogs = (dogs) => {
+    table.innerHTML = ""
     dogs.forEach(dog => {
         const dogTr = document.createElement("tr")
         dogTr.dataset.id = dog.id
@@ -38,24 +38,40 @@ const renderDogs = (dogs) => {
 }
 
 const handleClick = () => {
-    document.addEventListener("click", e => {
-        if(e.target.className === "dog-button"){
-            const dogsTr = e.target.parentElement
+    document.addEventListener("click", event => {
+        if(event.target.className === "dog-button"){
+            const dogsTr = event.target.parentElement
             const parentElement = dogsTr.parentElement
- 
+
             dogFormName.value = parentElement.children[0].innerText
             dogFormBreed.value = parentElement.children[1].innerText
             dogFormSex.value = parentElement.children[2].innerText
+            
+            document.addEventListener("submit", e => {
+                e.preventDefault()
+                const name = e.target.name.value
+                const breed = e.target.breed.value
+                const sex = e.target.sex.value
+                const id = parentElement.dataset.id
+                fetch(`http://localhost:3000/dogs/${id}`, {
+                    method: 'PATCH',
+                    body: JSON.stringify({
+                        name: name,
+                        breed: breed,
+                        sex: sex
+                    }),
+                    headers: {
+                        "Content-type": "application/json; charset=UTF-8"
+                    }
+                })
+                .then(resp => resp.json())
+                .then(fetchDogs)
+            })
+        
         }
     })
 }
 
 
-const handleSubmit = () => {
-    document.addEventListener("submit", e => {
-        e.preventDefault()
-        const name = e.target.name.value
-        const breed = e.target.breed.value
-        const sex = e.target.sex.value
-    })
-}
+
+ 
